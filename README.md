@@ -1,40 +1,108 @@
-# Erptool
+### ERP CLI Tool
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/erptool`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Inspiration for this tool
+---
+Postman is great but we have to make multiple calls
+and manually copy/paste 
 
-TODO: Delete this and the text above, and describe your gem
+Postman is ineffecient for complex API logic
 
-## Installation
+Solve complex or time consuming PSI using the APIs
 
-Add this line to your application's Gemfile:
+## What it should do
+---
+- X handle oauth tokens 
+- X handle refresh of token before each command / script 
 
-```ruby
-gem 'erptool'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install erptool
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/erptool. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/erptool/blob/master/CODE_OF_CONDUCT.md).
+## First functionalities
+--- 
+- psi note command that generates structure
+  -- prompts to create a new dir or "link to existing psi note dir"
+  -- dir:PSI_number/file:PSI_number w/ requires, gem file.
+- return ERP id <==> procore ids
+- reset ERP sync event
+- reset CCOS
+(speak w/ psi team about next 3 features)
 
 
-## Code of Conduct
+## People who use this:
+---
+Dev team 
+PSI team
 
-Everyone interacting in the Erptool project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/erptool/blob/master/CODE_OF_CONDUCT.md).
+
+## Interface
+---
+> eprtool COMMAND ARGS 
+> ERPTOOL PROMT (keeps asking until you say no more.)
+
+
+## Thoughts
+---
+- Keep interface is CLI
+- abstract interface 
+- logic that is in the scirpts should build as service classes for future implementation to MicroServices.
+- think about 3rd party integrators that use procore api ( they may need to reset their PCCOs )
+
+
+### TODOs
+X use tty-prompt to display project name
+X use tty-config to create a config file somewhere
+
+---
+X  change config file to be placed in users home path
+X  fix oath flow to ask for auth_code from generated URL using the serverless redirect_uri 
+    prompt :
+      client_id
+      client_secret
+      use lanchy to open url for user to copy paste auth_code after login
+      uses auth_code to get token, refresh_token, created_at, expire_time and write to file
+      get refresh token to work as a helper method
+
+  X Stop sync event using /rest/v0/
+    build in a way that can be 'exported' into MS
+
+
+  X Create PSI comand that takes --link and --init flags
+    it will throw an error if there is not path set in the config
+    it will save this psi_notes_path in the config file
+    it will create a psi_notes dir in home path when init is used
+    it will set the location of psi_notes to path when --link is used
+    it will create a .erptool_gemspec file that includes gems for either --link or --init
+      gems to include: json, httpary, pry-byebug, csv, awesome_print
+    it will prompt for psi link, comany name, psi number and then create a file from that
+
+  PCCO cmd
+    subcommands:
+    DETAILS - 
+      Given a Company ID , Project ID, PCCO ID 
+      return all details about the PC & PCCO & Line items, such as origin ids and status
+
+      ouputs:
+      table PC
+        id
+        origin id
+        status
+        erp id
+       - table PC Line Items
+          id
+          origin id
+          status
+        
+      table PCCO
+        id
+        origin id
+        status
+        - table PCCO Line Items
+          id
+          origin id
+          status
+
+
+
+
+
+
+
+
+
